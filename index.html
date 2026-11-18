@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fitness Tracker – Move. Record. Share.</title>
+<style>
+:root{--bg:#f6f8f5;--surface:#fff;--text:#14201a;--muted:#5a6b61;--accent:#1f9d55;--accent2:#0f6b3a;--line:#dde6df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1511;--surface:#16201a;--text:#e9f2ec;--muted:#9bb0a3;--accent:#3ddc84;--accent2:#7ff0b0;--line:#25332b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1511;--surface:#16201a;--text:#e9f2ec;--muted:#9bb0a3;--accent:#3ddc84;--accent2:#7ff0b0;--line:#25332b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+.logo span{color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-size:.95rem}
+.hero{padding:56px 0 48px;text-align:center}
+.pill{display:inline-block;padding:5px 14px;border:1px solid var(--line);border-radius:99px;color:var(--accent2);font-size:.85rem;background:var(--surface)}
+h1{font-size:clamp(2.2rem,6vw,3.8rem);line-height:1.1;letter-spacing:-.03em;margin:20px 0 16px}
+h1 em{font-style:normal;color:var(--accent)}
+.hero p{max-width:560px;margin:0 auto 28px;color:var(--muted);font-size:1.1rem}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:13px 26px;border-radius:12px;text-decoration:none;font-weight:700}
+.btn.alt{background:transparent;color:var(--text);border:1px solid var(--line);margin-left:8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:8px 0 56px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
+.stat b{display:block;font-size:1.7rem;color:var(--accent)}
+.stat small{color:var(--muted)}
+h2{font-size:1.7rem;letter-spacing:-.02em;margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:56px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card .ic{font-size:1.6rem}
+.card h3{margin:10px 0 6px;font-size:1.05rem}
+.card p{margin:0;color:var(--muted);font-size:.95rem}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:56px}
+.tabs span{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:8px 18px;font-weight:600}
+.cta{background:var(--accent);color:#fff;border-radius:22px;padding:40px 24px;text-align:center;margin-bottom:48px}
+.cta h2{margin-bottom:8px}
+.cta .btn{background:#fff;color:#0f6b3a;margin-top:12px}
+.carousel{position:relative;border:1px solid var(--line);border-radius:24px;overflow:hidden;margin-bottom:56px;background:linear-gradient(135deg,var(--surface),var(--bg))}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.track::-webkit-scrollbar{display:none}
+.track>.card{flex:0 0 100%;scroll-snap-align:center;border:0;border-radius:0;background:transparent;text-align:center;padding:48px 64px 72px;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.track .ic{font-size:3.2rem;width:92px;height:92px;line-height:92px;border-radius:50%;background:var(--bg);border:1px solid var(--line);box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 12%,transparent)}
+.track h3{font-size:1.5rem;margin:20px 0 8px}
+.track p{max-width:440px;font-size:1.05rem}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--text);font-size:1.4rem;line-height:1;cursor:pointer}
+.arrow:hover{border-color:var(--accent);color:var(--accent)}
+.arrow.prev{left:12px}.arrow.next{right:12px}
+.dots{position:absolute;bottom:22px;left:0;right:0;display:flex;justify-content:center;gap:8px}
+.dots button{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:var(--line);cursor:pointer;transition:width .3s,background .3s}
+.dots button.on{width:26px;background:var(--accent)}
+@media(max-width:600px){.track>.card{padding:36px 40px 64px}.arrow{width:34px;height:34px}.arrow.prev{left:6px}.arrow.next{right:6px}}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:.9rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="logo">Fitness<span>Tracker</span></div><div><a href="#features">Features</a><a href="#social">Community</a><a href="#get">Get the app</a></div></nav>
+
+<section class="hero">
+<span class="pill">Free maps · No card needed</span>
+<h1>Move more. <em>Record</em> every route.</h1>
+<p>Track runs, rides and walks with live map tracking, set goals, earn achievements and share your progress with friends.</p>
+<a class="btn" href="#get">Get the app</a><a class="btn alt" href="#features">See features</a>
+</section>
+
+<div class="stats">
+<div class="stat"><b>Live</b><small>route tracking</small></div>
+<div class="stat"><b>Auto</b><small>pause detection</small></div>
+<div class="stat"><b>Cloud</b><small>backup with Google</small></div>
+<div class="stat"><b>Free</b><small>open map tiles</small></div>
+</div>
+
+<section id="features">
+<h2>Everything you need to train</h2>
+<div class="carousel" id="car"><div class="track" id="track">
+<div class="card"><div class="ic">📍</div><h3>Live map tracking</h3><p>Record your route in real time, even with the screen off, with pause and auto-pause.</p></div>
+<div class="card"><div class="ic">🗺️</div><h3>Saved routes</h3><p>Keep your favourite routes and reuse them whenever you like.</p></div>
+<div class="card"><div class="ic">🎯</div><h3>Goals</h3><p>Set distance and activity goals and watch your progress build.</p></div>
+<div class="card"><div class="ic">🏆</div><h3>Achievements &amp; rankings</h3><p>Unlock milestones and see how you compare on the leaderboard.</p></div>
+<div class="card"><div class="ic">📊</div><h3>History &amp; statistics</h3><p>Review every session with clear stats on distance, time and pace.</p></div>
+<div class="card"><div class="ic">☁️</div><h3>Cloud backup</h3><p>Sign in with Google to back up your data and move it to another account.</p></div>
+</div>
+<button class="arrow prev" id="prev" aria-label="Previous feature">‹</button><button class="arrow next" id="next" aria-label="Next feature">›</button>
+<div class="dots" id="dots"></div></div>
+</section>
+
+<section id="social">
+<h2>Share with your people</h2>
+<div class="tabs"><span>Posts feed</span><span>Follow friends</span><span>Comments</span><span>Shareable profile</span><span>Close-friends audience</span></div>
+<div class="grid">
+<div class="card"><div class="ic">🔒</div><h3>You control privacy</h3><p>Choose who sees each post: everyone, followers or close friends. Hide your route whenever you want.</p></div>
+<div class="card"><div class="ic">🪪</div><h3>Nickname or real name</h3><p>Show a nickname on posts, with the option to display your real name instead.</p></div>
+</div>
+</section>
+
+<section id="get" class="cta">
+<h2>Ready to start moving?</h2>
+<p>Fitness Tracker is available for Android.</p>
+<a class="btn" href="#get">Coming soon</a>
+</section>
+</div>
+<footer>© <span id="y">2026</span> Keplaz Digital Labs · Fitness Tracker</footer>
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+(function(){
+var car=document.getElementById('car'),t=document.getElementById('track'),d=document.getElementById('dots'),n=t.children.length,i=0,last=0,hover=false;
+function cur(){return Math.round(t.scrollLeft/t.clientWidth)}
+function mark(){var c=cur();for(var k=0;k<n;k++)d.children[k].className=k===c?'on':''}
+function go(k){i=(k+n)%n;t.scrollTo({left:i*t.clientWidth,behavior:'smooth'})}
+function user(k){last=Date.now();go(k)}
+for(var k=0;k<n;k++){(function(k){var b=document.createElement('button');b.setAttribute('aria-label','Go to feature '+(k+1));b.onclick=function(){user(k)};d.appendChild(b)})(k)}
+document.getElementById('prev').onclick=function(){user(cur()-1)};
+document.getElementById('next').onclick=function(){user(cur()+1)};
+t.addEventListener('scroll',mark);
+['pointerdown','touchstart','wheel','keydown'].forEach(function(e){car.addEventListener(e,function(){last=Date.now()},{passive:true})});
+car.addEventListener('mouseenter',function(){hover=true});
+car.addEventListener('mouseleave',function(){hover=false});
+window.addEventListener('resize',function(){t.scrollLeft=cur()*t.clientWidth});
+mark();
+if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){
+setInterval(function(){if(!hover&&Date.now()-last>5000)go(cur()+1)},4000)}
+})();
+</script>
+</body>
+</html>
